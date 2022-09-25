@@ -1,0 +1,71 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "GameData/1.0.0": {
+        "dependencies": {
+          "NLog": "4.7.8",
+          "Redzen": "12.0.0",
+          "Steamworks.NET": "20.1.0.0"
+        },
+        "runtime": {
+          "GameData.dll": {}
+        }
+      },
+      "NLog/4.7.8": {
+        "runtime": {
+          "lib/netstandard2.0/NLog.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.7.8.12686"
+          }
+        }
+      },
+      "Redzen/12.0.0": {
+        "runtime": {
+          "lib/net5.0/Redzen.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.0.0"
+          }
+        }
+      },
+      "Steamworks.NET/20.1.0.0": {
+        "runtime": {
+          "Steamworks.NET.dll": {
+            "assemblyVersion": "20.1.0.0",
+            "fileVersion": "20.1.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "GameData/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NLog/4.7.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-G/TQI32O1tf0USZwsz8/uxPSR/hgbesuB7A5PHU/yWkhWQNVr4OriNWO/ImE3NiSzAPCt1UaUFE51+eHQmZPQg==",
+      "path": "nlog/4.7.8",
+      "hashPath": "nlog.4.7.8.nupkg.sha512"
+    },
+    "Redzen/12.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-deqr9ipTt2pE4zUtjWxlOxTUZ51ozDYjEONJIhOJ9etsbaAzD5jyjoiIy5Gf8aJyOa+b7AY9Y8ATV/JR1/Ym6A==",
+      "path": "redzen/12.0.0",
+      "hashPath": "redzen.12.0.0.nupkg.sha512"
+    },
+    "Steamworks.NET/20.1.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

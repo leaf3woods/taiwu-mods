@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\Dependency\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="GameData">
+      <HintPath>..\Dependency\GameData.dll</HintPath>
+    </Reference>
+    <Reference Include="TaiwuModdingLib">
+      <HintPath>..\Dependency\TaiwuModdingLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy $(TargetDir)$(TargetName).dll E:\GamesLibrary\SteamLibrary\steamapps\common\&quot;The Scroll Of Taiwu&quot;\Mod\$(TargetName)\Plugins\$(TargetName).dll&#xD;&#xA;copy $(TargetDir)$(TargetName).pdb E:\GamesLibrary\SteamLibrary\steamapps\common\&quot;The Scroll Of Taiwu&quot;\Mod\$(TargetName)\Plugins\$(TargetName).pdb" />
+  </Target>
+
+</Project>

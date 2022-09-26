@@ -16,13 +16,13 @@ namespace straight_A_protagonist
     public class Patch : TaiwuRemakePlugin
     {
         private Harmony _harmony;
-        private static PatchConfig _patchConfig = null!;
+        private static PatchConfig _config;
 
         public override void Dispose()
         {
             try
             {
-                _patchConfig.SaveConfig();
+                _config.SaveConfig();
                 _harmony?.UnpatchAll();
                 AdaptableLog.Info("harmony patch disposed!");
             }
@@ -36,8 +36,8 @@ namespace straight_A_protagonist
         {
             _harmony = Harmony.CreateAndPatchAll(typeof(Patch));
             AdaptableLog.Info("straight_A_protagonist injection succeed!");
-            _patchConfig = PatchConfig.LoadConfigFile();
-            AdaptableLog.Info("settings will generate in: " + PatchConfig.PathBase);
+            _config = PatchConfig.LoadConfigFile();
+            AdaptableLog.Info("settings load succeed!" + PatchConfig.PathBase);
         }
         [HarmonyPrefix]
         [HarmonyPatch(declaringType: typeof(GameData.Domains.Character.Character), methodName: "GenerateRandomBasicFeatures")]
@@ -48,7 +48,7 @@ namespace straight_A_protagonist
             {
                 AdaptableLog.Info($"current features's featId are {string.Join(",", featureGroup2Id.Values)}");
                 var featureInstance = CharacterFeature.Instance;
-                _patchConfig.AvailableFeatures = featureInstance.Select<CharacterFeatureItem, Feature>(x =>
+                _config.AllAvailableFeatures = featureInstance.Select<CharacterFeatureItem, Feature>(x =>
                 {
                     return new Feature
                     {
@@ -57,20 +57,24 @@ namespace straight_A_protagonist
                         Name = x.Name,
                     };
                 });
+                var customFeatPool = _config.AllAvailableFeatures
+                    .Where(x => _config.CustomFeatureIds.Contains(x.Id))
+                    .ToDictionary(x => x.Id, x => x.GroupId)
+                    ?? throw new Exception("can't find available feature in custom feature pool!");
                 //减去消耗的基础属性数
-                var customFeatureCount = _patchConfig.FeaturesCount - featureGroup2Id.Count(x => featureInstance[x.Value].Basic);
+                var customFeatureCount = _config.FeaturesCount - featureGroup2Id.Count(x => featureInstance[x.Value].Basic);
                 AdaptableLog.Info($"remain custom features count is {customFeatureCount}");
                 while (customFeatureCount > 0)
                 {
-#warning using custom here!!!
-                    var radomFeature = GetRandomFeatureFromCustomPool(featureGroup2Id);
+//#warning using custom here!!!
+                    var radomFeature = GetRandomFeatureFromCustomPool(customPool:customFeatPool);
                     featureGroup2Id.Add(radomFeature.Item1, radomFeature.Item2);
                     customFeatureCount--;
                 }
-                AdaptableLog.Info("feature added Successed! detail:" + String.Join(",",featureGroup2Id.Values));
+                AdaptableLog.Info("feature add Succeed! detail:" + String.Join(",",featureGroup2Id.Values));
 #if DEBUG
-                _patchConfig.SaveConfig();
-                AdaptableLog.Info("SaveConfig Successed");
+                _config.SaveConfig();
+                AdaptableLog.Info("SaveConfig Succeed");
 #endif
                 return false;
             }

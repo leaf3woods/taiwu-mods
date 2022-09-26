@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -15,9 +15,5 @@
       <HintPath>..\Dependency\TaiwuModdingLib.dll</HintPath>
     </Reference>
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy $(TargetDir)$(TargetName).dll E:\GamesLibrary\SteamLibrary\steamapps\common\&quot;The Scroll Of Taiwu&quot;\Mod\$(TargetName)\Plugins\$(TargetName).dll&#xD;&#xA;copy $(TargetDir)$(TargetName).pdb E:\GamesLibrary\SteamLibrary\steamapps\common\&quot;The Scroll Of Taiwu&quot;\Mod\$(TargetName)\Plugins\$(TargetName).pdb" />
-  </Target>
 
 </Project>

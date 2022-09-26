@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace TaiWuSavEditor
 {
-    internal class Deserializer
+    public class Deserializer
     {
+        public void JustForTest()
+        {
+            var i = 0;
+            i++;
+        }
     }
 }

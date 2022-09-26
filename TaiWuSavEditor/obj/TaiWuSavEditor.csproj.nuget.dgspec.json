@@ -1,24 +1,75 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Code\\Source\\PersonalRepos\\TaiWuMods\\TaiWuSavEditor\\TaiWuSavEditor.csproj": {}
+    "D:\\My\\tai_wu_mods\\TaiWuSavEditor\\TaiWuSavEditor.csproj": {}
   },
   "projects": {
-    "E:\\Code\\Source\\PersonalRepos\\TaiWuMods\\TaiWuSavEditor\\TaiWuSavEditor.csproj": {
+    "D:\\My\\tai_wu_mods\\straight_A_protagonist\\straight_A_protagonist.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Code\\Source\\PersonalRepos\\TaiWuMods\\TaiWuSavEditor\\TaiWuSavEditor.csproj",
-        "projectName": "TaiWuSavEditor",
-        "projectPath": "E:\\Code\\Source\\PersonalRepos\\TaiWuMods\\TaiWuSavEditor\\TaiWuSavEditor.csproj",
-        "packagesPath": "C:\\Users\\leaf3\\.nuget\\packages\\",
-        "outputPath": "E:\\Code\\Source\\PersonalRepos\\TaiWuMods\\TaiWuSavEditor\\obj\\",
+        "projectUniqueName": "D:\\My\\tai_wu_mods\\straight_A_protagonist\\straight_A_protagonist.csproj",
+        "projectName": "straight_A_protagonist",
+        "projectPath": "D:\\My\\tai_wu_mods\\straight_A_protagonist\\straight_A_protagonist.csproj",
+        "packagesPath": "C:\\Users\\sen\\.nuget\\packages\\",
+        "outputPath": "D:\\My\\tai_wu_mods\\straight_A_protagonist\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\leaf3\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\sen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "D:\\Work\\Nuget Local\\MyPublish\\Crypto": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\My\\tai_wu_mods\\TaiWuSavEditor\\TaiWuSavEditor.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\My\\tai_wu_mods\\TaiWuSavEditor\\TaiWuSavEditor.csproj",
+        "projectName": "TaiWuSavEditor",
+        "projectPath": "D:\\My\\tai_wu_mods\\TaiWuSavEditor\\TaiWuSavEditor.csproj",
+        "packagesPath": "C:\\Users\\sen\\.nuget\\packages\\",
+        "outputPath": "D:\\My\\tai_wu_mods\\TaiWuSavEditor\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\sen\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,13 +77,17 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
+          "D:\\Work\\Nuget Local\\MyPublish\\Crypto": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "D:\\My\\tai_wu_mods\\straight_A_protagonist\\straight_A_protagonist.csproj": {
+                "projectPath": "D:\\My\\tai_wu_mods\\straight_A_protagonist\\straight_A_protagonist.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -50,8 +105,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -60,7 +114,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }

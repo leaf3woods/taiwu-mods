@@ -11,7 +11,7 @@ namespace PatchingTest
         public void TLoadPatchConfig()
         {
             PatchConfig config = PatchConfig.LoadConfigFile();
-            string testPath = PatchConfig.PathBase+ "patch_settings.json"; 
+            string testPath = Path.Combine(PatchConfig.PathBase, "patch_settings.json"); 
             //step 1 no config file loadup
             if(File.Exists(testPath)) File.Delete(testPath);
             config = PatchConfig.LoadConfigFile();
@@ -27,8 +27,17 @@ namespace PatchingTest
             File.WriteAllText(testPath, JsonSerializer.Serialize<PatchConfig>(new PatchConfig
             {
                 FeaturesCount = 7,
-                CustomFeatures = new List<Feature>(),
-                IfUseCustomFeaturePool = true
+                CustomFeatures = new List<Feature>
+                    {
+                        new Feature
+                        {
+                            Id = 1,
+                            GroupId = 2,
+                            IsLocked = false,
+                            Name = "exmaple"
+                        }
+                    },
+                IfUseCustomFeaturePool = true,
             }));
             config = PatchConfig.LoadConfigFile();
             Assert.IsNotNull(config);

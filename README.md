@@ -9,4 +9,4 @@ mods of the scroll of taiwu
 
 自定义特质数量, 默认为7个
 
-选择固定特质，
+选择固定特质，在json 相应特征处， 将locked字段改为true

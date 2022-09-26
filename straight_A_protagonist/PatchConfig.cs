@@ -43,8 +43,17 @@ namespace straight_A_protagonist
                 var @default = new PatchConfig
                 {
                     FeaturesCount = 7,
-                    CustomFeatures = new List<Feature>(),
-                    IfUseCustomFeaturePool = true
+                    CustomFeatures = new List<Feature>
+                    {
+                        new Feature
+                        {
+                            Id = 1,
+                            GroupId = 2,
+                            IsLocked = false,
+                            Name = "exmaple"
+                        }
+                    },
+                    IfUseCustomFeaturePool = true,
                 };
                 SaveConfig(@default);
                 return @default;
@@ -58,14 +67,18 @@ namespace straight_A_protagonist
             using FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.Write);
             var buffer = Encoding.UTF8.GetBytes(json);
             fs.Write(buffer, 0, buffer.Length);
+            fs.Flush();
+            fs.Close();
         }
         private static void SaveConfig(PatchConfig config, string filename = null)
         {
             var fullPath = Path.Combine(PathBase, filename ?? _filename);
             var json = JsonSerializer.Serialize<PatchConfig>(config ?? throw new Exception("null patch config!"));
-            using FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.Write);
+            using FileStream fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
             var buffer = Encoding.UTF8.GetBytes(json);
             fs.Write(buffer, 0, buffer.Length);
+            fs.Flush();
+            fs.Close();
         }
     }
 }

@@ -63,7 +63,7 @@ namespace straight_A_protagonist
                     ?? throw new Exception("can't find available feature in custom feature pool!");
                 AdaptableLog.Info($"get all({_config.AllAvailableFeatures.Count()})-custom({customFeatPool.Count()}) feats succeed");
 #if DEBUG
-                _config.SaveConfig();
+                _config.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures, "available_features.json");
                 AdaptableLog.Info("save config succeed");
 #endif
                 //减去消耗的基础属性数

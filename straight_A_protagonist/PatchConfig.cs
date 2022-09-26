@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.Unicode;
 using System.Threading.Tasks;
 
@@ -13,11 +14,12 @@ namespace straight_A_protagonist
 {
     public class PatchConfig
     {
-        public static string PathBase = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-        public PatchConfig() { }
+        public static string PathBase = Path.Combine(Path.GetFullPath(".."), "Mod", "straight_A_protagonist", "Plugins", "Config");
+        public PatchConfig() { if (!Directory.Exists(PathBase)) Directory.CreateDirectory(PathBase); }
         public int FeaturesCount { get; set; }
         public List<Feature> CustomFeatures { get; set; }
         public bool IfUseCustomFeaturePool { get; set; }
+        [JsonIgnore]
         public IEnumerable<Feature> AllAvailableFeatures { get; set; }
 
         private static string _filename = "patch_settings.json";
@@ -62,6 +64,7 @@ namespace straight_A_protagonist
             using FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.Write);
             var buffer = Encoding.UTF8.GetBytes(json);
             fs.Write(buffer, 0, buffer.Length);
+            fs.Flush();
         }
         private static void SaveConfig(PatchConfig config, string filename = null)
         {
@@ -73,6 +76,20 @@ namespace straight_A_protagonist
             using FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.Write);
             var buffer = Encoding.UTF8.GetBytes(json);
             fs.Write(buffer, 0, buffer.Length);
+            fs.Flush();
+        }
+
+        public void SaveAsJson<T>(T obj, string filename)
+        {
+            var fullPath = Path.Combine(PathBase, filename ?? _filename);
+            var json = JsonSerializer.Serialize<T>(obj ?? throw new Exception("null patch config!"), new JsonSerializerOptions
+            {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All)
+            });
+            using FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.Write);
+            var buffer = Encoding.UTF8.GetBytes(json);
+            fs.Write(buffer, 0, buffer.Length);
+            fs.Flush();
         }
     }
 }

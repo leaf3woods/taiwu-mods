@@ -58,12 +58,18 @@ namespace straight_A_protagonist
                     };
                 });
                 var customFeatPool = _config.AllAvailableFeatures
-                    .Where(x => _config.CustomFeatures.Any(y => x.Id == y.Id && y.IsLocked))
-                    .ToDictionary(x => x.Id, x => x.GroupId)
+                    .Where(x => _config.CustomFeatures.Any(y => x.Id == y.Id && x.GroupId == y.GroupId))
                     ?? throw new Exception("can't find available feature in custom feature pool!");
+                var lockedFeatDic = customFeatPool
+                    .Where(x => x.IsLocked && !featureGroup2Id.Any(y => y.Key == x.Id && y.Value == x.GroupId))
+                    .ToDictionary(x => x.Id, x => x.GroupId)
+                    .Take(_config.FeaturesCount);
+                featureGroup2Id = featureGroup2Id.Concat(lockedFeatDic).ToDictionary(x => x.Key, x => x.Value);
                 AdaptableLog.Info($"get all({_config.AllAvailableFeatures.Count()})-custom({customFeatPool.Count()}) feats succeed");
 #if DEBUG
                 _config.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures, "available_features.json");
+                //一个组必定都是基础属性
+                _config.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures.Where(x => featureInstance[x.GroupId].Basic), "available_basic_features.json");
                 AdaptableLog.Info("save config succeed");
 #endif
                 //减去消耗的基础属性数
@@ -71,8 +77,8 @@ namespace straight_A_protagonist
                 AdaptableLog.Info($"remain custom features count is {customFeatureCount}");
                 while (customFeatureCount > 0)
                 {
-//#warning using custom here!!!
-                    var radomFeature = GetRandomFeatureFromCustomPool(customPool:customFeatPool);
+                    //#warning using custom here!!!
+                    var radomFeature = GetRandomFeatureFromCustomPool(customFeatPool.ToDictionary(x => x.Id, x => x.GroupId));
                     featureGroup2Id.Add(radomFeature.Item1, radomFeature.Item2);
                     customFeatureCount--;
                 }

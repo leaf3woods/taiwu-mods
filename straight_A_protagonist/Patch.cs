@@ -61,6 +61,11 @@ namespace straight_A_protagonist
                     .Where(x => _config.CustomFeatures.Any(y => x.Id == y.Id && y.IsLocked))
                     .ToDictionary(x => x.Id, x => x.GroupId)
                     ?? throw new Exception("can't find available feature in custom feature pool!");
+                AdaptableLog.Info($"get all({_config.AllAvailableFeatures.Count()})-custom({customFeatPool.Count()}) feats succeed");
+#if DEBUG
+                _config.SaveConfig();
+                AdaptableLog.Info("save config succeed");
+#endif
                 //减去消耗的基础属性数
                 var customFeatureCount = _config.FeaturesCount - featureGroup2Id.Count(x => featureInstance[x.Value].Basic);
                 AdaptableLog.Info($"remain custom features count is {customFeatureCount}");
@@ -72,15 +77,11 @@ namespace straight_A_protagonist
                     customFeatureCount--;
                 }
                 AdaptableLog.Info("feature add Succeed! detail:" + String.Join(",",featureGroup2Id.Values));
-#if DEBUG
-                _config.SaveConfig();
-                AdaptableLog.Info("SaveConfig Succeed");
-#endif
                 return false;
             }
             catch(Exception ex)
             {
-                AdaptableLog.Error($"patching feature failed: " + ex.Message);
+                AdaptableLog.Warning($"patching feature failed: " + ex.Message);
                 return true;
             }
         }

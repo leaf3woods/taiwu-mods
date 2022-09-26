@@ -12,7 +12,7 @@ namespace straight_A_protagonist
 {
     public class PatchConfig
     {
-        public static string PathBase = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+        public static string PathBase = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
         public PatchConfig() { }
         public int FeaturesCount { get; set; }
         public List<Feature> CustomFeatures { get; set; }
@@ -31,7 +31,7 @@ namespace straight_A_protagonist
                 byte[] buffer = new byte[1024];
                 var json = string.Empty;
                 while (fs.Read(buffer, 0, buffer.Length) > 0)
-                    json += Encoding.UTF8.GetString(buffer).TrimEnd('\0');
+                    json += Encoding.Unicode.GetString(buffer).TrimEnd('\0');
                 if (!string.IsNullOrEmpty(json))
                     return JsonSerializer.Deserialize<PatchConfig>(json);
                 else
@@ -39,7 +39,7 @@ namespace straight_A_protagonist
             }
             catch(Exception ex)
             {
-                AdaptableLog.Error($"load config file failed: " + ex.Message);
+                AdaptableLog.Warning($"load config file failed: " + ex.Message);
                 var @default = new PatchConfig
                 {
                     FeaturesCount = 7,
@@ -56,7 +56,7 @@ namespace straight_A_protagonist
             var fullPath = Path.Combine(PathBase, filename ?? _filename);
             var json = JsonSerializer.Serialize<PatchConfig>(this ?? throw new Exception("null patch config!"));
             using FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.Write);
-            var buffer = Encoding.UTF8.GetBytes(json);
+            var buffer = Encoding.Unicode.GetBytes(json);
             fs.Write(buffer, 0, buffer.Length);
         }
         private static void SaveConfig(PatchConfig config, string filename = null)
@@ -64,7 +64,7 @@ namespace straight_A_protagonist
             var fullPath = Path.Combine(PathBase, filename ?? _filename);
             var json = JsonSerializer.Serialize<PatchConfig>(config ?? throw new Exception("null patch config!"));
             using FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.Write);
-            var buffer = Encoding.UTF8.GetBytes(json);
+            var buffer = Encoding.Unicode.GetBytes(json);
             fs.Write(buffer, 0, buffer.Length);
         }
     }

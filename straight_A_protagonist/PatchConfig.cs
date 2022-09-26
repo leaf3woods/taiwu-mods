@@ -68,7 +68,6 @@ namespace straight_A_protagonist
             var buffer = Encoding.UTF8.GetBytes(json);
             fs.Write(buffer, 0, buffer.Length);
             fs.Flush();
-            fs.Close();
         }
         private static void SaveConfig(PatchConfig config, string filename = null)
         {
@@ -78,7 +77,6 @@ namespace straight_A_protagonist
             var buffer = Encoding.UTF8.GetBytes(json);
             fs.Write(buffer, 0, buffer.Length);
             fs.Flush();
-            fs.Close();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace PatchingTest
             File.WriteAllText(testPath, JsonSerializer.Serialize<PatchConfig>(new PatchConfig
             {
                 FeaturesCount = 7,
-                CustomFeatureIds = new List<short> { 1, 2, 3, 4, 6, 7, 8, 9, 10, 22 },
+                CustomFeatures = new List<Feature>(),
                 IfUseCustomFeaturePool = true
             }));
             config = PatchConfig.LoadConfigFile();

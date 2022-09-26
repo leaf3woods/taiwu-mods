@@ -15,7 +15,7 @@ namespace straight_A_protagonist
         public static string PathBase = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
         public PatchConfig() { }
         public int FeaturesCount { get; set; }
-        public List<short> CustomFeatureIds { get; set; }
+        public List<Feature> CustomFeatures { get; set; }
         public bool IfUseCustomFeaturePool { get; set; }
         public IEnumerable<Feature> AllAvailableFeatures { get; set; }
 
@@ -43,7 +43,7 @@ namespace straight_A_protagonist
                 var @default = new PatchConfig
                 {
                     FeaturesCount = 7,
-                    CustomFeatureIds = new List<short>{ 1, 2, 3, 4, 6, 7, 8, 9, 10, 22 },
+                    CustomFeatures = new List<Feature>(),
                     IfUseCustomFeaturePool = true
                 };
                 SaveConfig(@default);

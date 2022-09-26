@@ -58,7 +58,7 @@ namespace straight_A_protagonist
                     };
                 });
                 var customFeatPool = _config.AllAvailableFeatures
-                    .Where(x => _config.CustomFeatureIds.Contains(x.Id))
+                    .Where(x => _config.CustomFeatures.Any(y => x.Id == y.Id && y.IsLocked))
                     .ToDictionary(x => x.Id, x => x.GroupId)
                     ?? throw new Exception("can't find available feature in custom feature pool!");
                 //减去消耗的基础属性数
@@ -98,6 +98,7 @@ namespace straight_A_protagonist
         public short Id { get; init; }
         public string Name { get; init; }
         public short GroupId { get; init; }
+        public bool IsLocked { get; init; } = false;
     }
 
 }

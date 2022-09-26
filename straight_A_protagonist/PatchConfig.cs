@@ -17,8 +17,9 @@ namespace straight_A_protagonist
         public static string PathBase = Path.Combine(Path.GetFullPath(".."), "Mod", "straight_A_protagonist", "Plugins", "Config");
         public PatchConfig() { if (!Directory.Exists(PathBase)) Directory.CreateDirectory(PathBase); }
         public int FeaturesCount { get; set; }
-        public List<Feature> CustomFeatures { get; set; }
         public bool IfUseCustomFeaturePool { get; set; }
+        public bool IsOriginPoolGen { get; set; } = false;
+        public List<Feature> CustomFeatures { get; set; }
         [JsonIgnore]
         public IEnumerable<Feature> AllAvailableFeatures { get; set; }
 
@@ -29,12 +30,18 @@ namespace straight_A_protagonist
             try
             {
                 var fullPath = Path.Combine(PathBase, filename ?? _filename);
-                if (File.Exists(fullPath)) throw new Exception("json file is not exits");
+                if (!File.Exists(fullPath)) throw new Exception("json file is not exits");
                 using FileStream fs = new FileStream(fullPath, FileMode.Open, FileAccess.Read);
-                byte[] buffer = new byte[1024];
-                var json = string.Empty;
-                while (fs.Read(buffer, 0, buffer.Length) > 0)
-                    json += Encoding.UTF8.GetString(buffer).TrimEnd('\0');
+                var jsonb = new StringBuilder();
+                int count; 
+                while (true)
+                {
+                    byte[] buffer = new byte[1024];
+                    count = fs.Read(buffer, 0, buffer.Length);
+                    if (count > 0) jsonb.Append(Encoding.UTF8.GetString(buffer, 0, count));
+                    else break;
+                }
+                var json = jsonb.ToString();
                 if (!string.IsNullOrEmpty(json))
                     return JsonSerializer.Deserialize<PatchConfig>(json);
                 else
@@ -47,7 +54,8 @@ namespace straight_A_protagonist
                 {
                     FeaturesCount = 7,
                     CustomFeatures = new List<Feature>(),
-                    IfUseCustomFeaturePool = true
+                    IfUseCustomFeaturePool = true,
+                    IsOriginPoolGen = false,
                 };
                 SaveConfig(@default);
                 return @default;
@@ -61,7 +69,7 @@ namespace straight_A_protagonist
             {
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All)
             });
-            using FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.Write);
+            using FileStream fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
             var buffer = Encoding.UTF8.GetBytes(json);
             fs.Write(buffer, 0, buffer.Length);
             fs.Flush();
@@ -73,7 +81,7 @@ namespace straight_A_protagonist
             {
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All)
             });
-            using FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.Write);
+            using FileStream fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
             var buffer = Encoding.UTF8.GetBytes(json);
             fs.Write(buffer, 0, buffer.Length);
             fs.Flush();
@@ -86,7 +94,7 @@ namespace straight_A_protagonist
             {
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All)
             });
-            using FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.Write);
+            using FileStream fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
             var buffer = Encoding.UTF8.GetBytes(json);
             fs.Write(buffer, 0, buffer.Length);
             fs.Flush();

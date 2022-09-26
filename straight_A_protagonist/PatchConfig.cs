@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 
 namespace straight_A_protagonist
@@ -31,7 +32,7 @@ namespace straight_A_protagonist
                 byte[] buffer = new byte[1024];
                 var json = string.Empty;
                 while (fs.Read(buffer, 0, buffer.Length) > 0)
-                    json += Encoding.Unicode.GetString(buffer).TrimEnd('\0');
+                    json += Encoding.UTF8.GetString(buffer).TrimEnd('\0');
                 if (!string.IsNullOrEmpty(json))
                     return JsonSerializer.Deserialize<PatchConfig>(json);
                 else
@@ -54,17 +55,23 @@ namespace straight_A_protagonist
         public void SaveConfig(string filename = null)
         {
             var fullPath = Path.Combine(PathBase, filename ?? _filename);
-            var json = JsonSerializer.Serialize<PatchConfig>(this ?? throw new Exception("null patch config!"));
+            var json = JsonSerializer.Serialize<PatchConfig>(this ?? throw new Exception("null patch config!"), new JsonSerializerOptions
+            {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All)
+            });
             using FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.Write);
-            var buffer = Encoding.Unicode.GetBytes(json);
+            var buffer = Encoding.UTF8.GetBytes(json);
             fs.Write(buffer, 0, buffer.Length);
         }
         private static void SaveConfig(PatchConfig config, string filename = null)
         {
             var fullPath = Path.Combine(PathBase, filename ?? _filename);
-            var json = JsonSerializer.Serialize<PatchConfig>(config ?? throw new Exception("null patch config!"));
+            var json = JsonSerializer.Serialize<PatchConfig>(config ?? throw new Exception("null patch config!"), new JsonSerializerOptions
+            {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All)
+            });
             using FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.Write);
-            var buffer = Encoding.Unicode.GetBytes(json);
+            var buffer = Encoding.UTF8.GetBytes(json);
             fs.Write(buffer, 0, buffer.Length);
         }
     }

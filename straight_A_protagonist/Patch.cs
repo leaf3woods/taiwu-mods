@@ -5,6 +5,7 @@ using GameData.Domains.Character;
 using GameData.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Config;
 using System;
 
@@ -37,9 +38,15 @@ namespace straight_A_protagonist
             _config = PatchConfig.LoadConfigFile();
             AdaptableLog.Info("settings load succeed!" + PatchConfig.PathBase);
         }
+        /// <summary>
+        /// ref List<short> ____featureIds, 引用私有属性
+        /// </summary>
+        /// <param name="isProtagonist"></param>
+        /// <param name="featureGroup2Id"></param>
+        /// <returns></returns>
         [HarmonyPrefix]
         [HarmonyPatch(declaringType: typeof(GameData.Domains.Character.Character), methodName: "GenerateRandomBasicFeatures")]
-        public static bool PrefixOfGenerateRandomBasicFeatures(bool isProtagonist, Dictionary<short, short> featureGroup2Id)
+        public static bool PrefixOfGenerateRandomBasicFeatures( bool isProtagonist, Dictionary<short, short> featureGroup2Id)
         {
             if (!isProtagonist) return true;
             try
@@ -62,7 +69,9 @@ namespace straight_A_protagonist
                     .Where(x => x.IsLocked && !featureGroup2Id.Any(y => y.Key == x.Id))
                     .ToDictionary(x => x.Id, x => x.GroupId)
                     .Take(_config.FeaturesCount);
-                featureGroup2Id = featureGroup2Id.Concat(lockedFeatDic).ToDictionary(x => x.Key, x => x.Value);
+                var tempFeatureGroup2Id = featureGroup2Id.Concat(lockedFeatDic).ToDictionary(x => x.Key, x => x.Value);
+                featureGroup2Id.Clear();
+                foreach (var feature in tempFeatureGroup2Id) featureGroup2Id.TryAdd(feature.Key,feature.Value);
                 AdaptableLog.Info($"get all({_config.AllAvailableFeatures.Count()})-custom({customFeatPool.Count()}) feats succeed");
                 if (!_config.IsOriginPoolGen)
                 {

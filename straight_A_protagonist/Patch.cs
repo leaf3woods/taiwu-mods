@@ -64,7 +64,6 @@ namespace straight_A_protagonist
                     .Take(_config.FeaturesCount);
                 featureGroup2Id = featureGroup2Id.Concat(lockedFeatDic).ToDictionary(x => x.Key, x => x.Value);
                 AdaptableLog.Info($"get all({_config.AllAvailableFeatures.Count()})-custom({customFeatPool.Count()}) feats succeed");
-#if DEBUG
                 if (!_config.IsOriginPoolGen)
                 {
                     _config.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures, "available_features.json");
@@ -77,7 +76,6 @@ namespace straight_A_protagonist
                         , "available_basic_positive_features.json");
                     AdaptableLog.Info("generate origin pool succeed");
                 }
-#endif
                 //减去消耗的基础属性数
                 var customFeatureCount = _config.FeaturesCount - featureGroup2Id.Count(x => featureInstance[x.Value].Basic);
                 var remainsCustomFeatPool = customFeatPool
@@ -86,7 +84,6 @@ namespace straight_A_protagonist
                 AdaptableLog.Info($"remain custom features/pool count is {customFeatureCount}/{remainsCustomFeatPool.Count}");
                 while (customFeatureCount > 0)
                 {
-                    //#warning using custom here!!!
                     var radomFeature = GetRandomFeatureFromCustomPool(remainsCustomFeatPool);
                     featureGroup2Id.Add(radomFeature.Item1, radomFeature.Item2);
                     customFeatureCount--;
@@ -112,10 +109,13 @@ namespace straight_A_protagonist
             {
                 randomIndex = new Random().Next(0, customPool.Count - 1);
                 featId = featIds[randomIndex];
+                //groupid 用于锁定同组元素
                 if (customPool.ContainsValue(_config.IfUnlockSameGroup ? featId : customPool[featId])) continue;
                 else break;
             }
+#if DEBUG
             AdaptableLog.Info($"random index is {randomIndex}, result is ({featId}, {customPool[featId]})");
+#endif
             return (featId, customPool[featId]);
         }
     }

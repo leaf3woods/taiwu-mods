@@ -30,7 +30,7 @@ namespace straight_A_protagonist
                 if (!File.Exists(fullPath)) throw new Exception("json file is not exits");
                 using FileStream fs = new FileStream(fullPath, FileMode.Open, FileAccess.Read);
                 var jsonb = new StringBuilder();
-                int count; 
+                int count = 0; 
                 while (true)
                 {
                     byte[] buffer = new byte[1024];
@@ -60,35 +60,14 @@ namespace straight_A_protagonist
             }
         }
 
-        public void SaveConfig(string filename = null)
-        {
-            var fullPath = Path.Combine(PathBase, filename ?? _filename);
-            var json = JsonSerializer.Serialize<PatchConfig>(this ?? throw new Exception("null patch config!"), new JsonSerializerOptions
-            {
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All)
-            });
-            using FileStream fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
-            var buffer = Encoding.UTF8.GetBytes(json);
-            fs.Write(buffer, 0, buffer.Length);
-            fs.Flush();
-        }
-        private static void SaveConfig(PatchConfig config, string filename = null)
-        {
-            var fullPath = Path.Combine(PathBase, filename ?? _filename);
-            var json = JsonSerializer.Serialize<PatchConfig>(config ?? throw new Exception("null patch config!"), new JsonSerializerOptions
-            {
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All)
-            });
-            using FileStream fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
-            var buffer = Encoding.UTF8.GetBytes(json);
-            fs.Write(buffer, 0, buffer.Length);
-            fs.Flush();
-        }
+        public void SaveConfig(string filename = null) => SaveAsJson<PatchConfig>(this, filename ?? _filename);
 
-        public void SaveAsJson<T>(T obj, string filename)
+        private static void SaveConfig(PatchConfig config, string filename = null) => SaveAsJson<PatchConfig>(config, filename ?? _filename);
+
+        public static void SaveAsJson<T>(T obj, string filename)
         {
-            var fullPath = Path.Combine(PathBase, filename ?? _filename);
-            var json = JsonSerializer.Serialize<T>(obj ?? throw new Exception("null patch config!"), new JsonSerializerOptions
+            var fullPath = Path.Combine(PathBase, filename);
+            var json = JsonSerializer.Serialize<T>(obj ?? throw new Exception($"json serialize failed, null {obj}"), new JsonSerializerOptions
             {
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All)
             });

@@ -91,11 +91,10 @@ namespace straight_A_protagonist
                     .Where(x => !featureGroup2Id.Any(y => y.Key == x.Id))
                     .ToDictionary(x => x.Id, x => x.GroupId);
                 AdaptableLog.Info($"remain custom features/pool count is {customFeatureCount}/{remainsCustomFeatPool.Count}");
-                while (customFeatureCount > 0)
+                while (customFeatureCount-- > 0)
                 {
                     var radomFeature = GetRandomFeatureFromCustomPool(featureGroup2Id, remainsCustomFeatPool);
                     featureGroup2Id.Add(radomFeature.Item1, radomFeature.Item2);
-                    customFeatureCount--;
                 }
                 _config.IsOriginPoolGen = true;
                 _config.SaveConfig();
@@ -114,7 +113,7 @@ namespace straight_A_protagonist
             var featIds = customPool.Select(x => x.Key).ToArray();
             int randomIndex = 0;
             short featId = 0;
-            int tryTimesMax = 30;
+            int tryTimesMax = 100;
             while (tryTimesMax-- > 0)
             {
                 randomIndex = new Random().Next(0, customPool.Count - 1);

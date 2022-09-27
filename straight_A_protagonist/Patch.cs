@@ -94,7 +94,7 @@ namespace straight_A_protagonist
                 while (customFeatureCount-- > 0)
                 {
                     var radomFeature = GetRandomFeatureFromCustomPool(featureGroup2Id, remainsCustomFeatPool);
-                    featureGroup2Id.Add(radomFeature.Item1, radomFeature.Item2);
+                    featureGroup2Id.TryAdd(radomFeature.Item1, radomFeature.Item2);
                 }
                 _config.IsOriginPoolGen = true;
                 _config.SaveConfig();

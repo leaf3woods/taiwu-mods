@@ -2,13 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.Unicode;
-using System.Threading.Tasks;
 
 namespace straight_A_protagonist
 {
@@ -19,6 +15,7 @@ namespace straight_A_protagonist
         public int FeaturesCount { get; set; }
         public bool IfUseCustomFeaturePool { get; set; }
         public bool IsOriginPoolGen { get; set; } = false;
+        public bool IfUnlockSameGroup { get; set; } = false;
         public List<Feature> CustomFeatures { get; set; }
         [JsonIgnore]
         public IEnumerable<Feature> AllAvailableFeatures { get; set; }
@@ -56,6 +53,7 @@ namespace straight_A_protagonist
                     CustomFeatures = new List<Feature>(),
                     IfUseCustomFeaturePool = true,
                     IsOriginPoolGen = false,
+                    IfUnlockSameGroup = true,
                 };
                 SaveConfig(@default);
                 return @default;

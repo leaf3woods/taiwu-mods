@@ -105,18 +105,18 @@ namespace straight_A_protagonist
 
         private static (short,short) GetRandomFeatureFromCustomPool(Dictionary<short,short> customPool)
         {
-            var groupIds = customPool.Select(x => x.Key).ToArray();
+            var featIds = customPool.Select(x => x.Key).ToArray();
             int randomIndex = 0;
-            short groupId = 0;
+            short featId = 0;
             while (true)
             {
                 randomIndex = new Random().Next(0, customPool.Count - 1);
-                groupId = groupIds[randomIndex];
-                if (customPool.ContainsValue(groupId)) continue;
+                featId = featIds[randomIndex];
+                if (customPool.ContainsValue(_config.IfUnlockSameGroup ? featId : customPool[featId])) continue;
                 else break;
             }
-            AdaptableLog.Info($"random index is {randomIndex}, result is ({groupId}, {customPool[groupId]})");
-            return (groupId, customPool[groupId]);
+            AdaptableLog.Info($"random index is {randomIndex}, result is ({featId}, {customPool[featId]})");
+            return (featId, customPool[featId]);
         }
     }
 

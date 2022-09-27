@@ -84,7 +84,7 @@ namespace straight_A_protagonist
                 AdaptableLog.Info($"remain custom features/pool count is {customFeatureCount}/{remainsCustomFeatPool.Count}");
                 while (customFeatureCount > 0)
                 {
-                    var radomFeature = GetRandomFeatureFromCustomPool(remainsCustomFeatPool);
+                    var radomFeature = GetRandomFeatureFromCustomPool(featureGroup2Id, remainsCustomFeatPool);
                     featureGroup2Id.Add(radomFeature.Item1, radomFeature.Item2);
                     customFeatureCount--;
                 }
@@ -100,7 +100,7 @@ namespace straight_A_protagonist
             }
         }
 
-        private static (short,short) GetRandomFeatureFromCustomPool(Dictionary<short,short> customPool)
+        private static (short,short) GetRandomFeatureFromCustomPool(Dictionary<short,short> currentPool, Dictionary<short,short> customPool)
         {
             var featIds = customPool.Select(x => x.Key).ToArray();
             int randomIndex = 0;
@@ -110,7 +110,7 @@ namespace straight_A_protagonist
                 randomIndex = new Random().Next(0, customPool.Count - 1);
                 featId = featIds[randomIndex];
                 //groupid 用于锁定同组元素
-                if (customPool.ContainsValue(_config.IfUnlockSameGroup ? featId : customPool[featId])) continue;
+                if (currentPool.ContainsValue(_config.IfUnlockSameGroup ? featId : customPool[featId])) continue;
                 else break;
             }
 #if DEBUG

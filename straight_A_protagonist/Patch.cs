@@ -1,14 +1,12 @@
 ﻿using HarmonyLib;
 using GameData;
 using TaiwuModdingLib.Core.Plugin;
-using GameData.Domains.World;
 using GameData.Domains.Character;
 using GameData.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using Config;
 using System;
-using System.Reflection.Metadata.Ecma335;
 
 namespace straight_A_protagonist
 {
@@ -95,7 +93,7 @@ namespace straight_A_protagonist
                 }
                 _config.IsOriginPoolGen = true;
                 _config.SaveConfig();
-                AdaptableLog.Info("feature add Succeed! detail:" + String.Join(",",featureGroup2Id.Values));
+                AdaptableLog.Info("feature add Succeed! detail:" + string.Join(",", featureGroup2Id.Values));
                 return false;
             }
             catch(Exception ex)
@@ -108,8 +106,15 @@ namespace straight_A_protagonist
         private static (short,short) GetRandomFeatureFromCustomPool(Dictionary<short,short> customPool)
         {
             var groupIds = customPool.Select(x => x.Key).ToArray();
-            var randomIndex = new Random().Next(0, groupIds.Count() - 1);
-            var groupId = groupIds[randomIndex];
+            int randomIndex = 0;
+            short groupId = 0;
+            while (true)
+            {
+                randomIndex = new Random().Next(0, customPool.Count - 1);
+                groupId = groupIds[randomIndex];
+                if (customPool.ContainsValue(groupId)) continue;
+                else break;
+            }
             AdaptableLog.Info($"random index is {randomIndex}, result is ({groupId}, {customPool[groupId]})");
             return (groupId, customPool[groupId]);
         }

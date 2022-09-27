@@ -10,13 +10,23 @@
 * 游戏文件夹的Mod下：
 
 ```
-├─straight_A_protagonist
-│  └─Plugins
-│      ├─backup
-│      └─Config
-└─test
+└─straight_A_protagonist
+    │  Config.lua
+    │  girl.jpg
+    │  Settings.Lua
+    │
     └─Plugins
+        │  straight_A_protagonist.dll
+        │  straight_A_protagonist.pdb
+        │
+        └─Config
+                available_basic_features.json
+                available_basic_positive_features.json
+                available_features.json
+                patch_settings.json
 ```
+
+
 
 > ###### 说明
 

@@ -114,7 +114,8 @@ namespace straight_A_protagonist
             var featIds = customPool.Select(x => x.Key).ToArray();
             int randomIndex = 0;
             short featId = 0;
-            while (true)
+            int tryTimesMax = 30;
+            while (tryTimesMax-- > 0)
             {
                 randomIndex = new Random().Next(0, customPool.Count - 1);
                 featId = featIds[randomIndex];

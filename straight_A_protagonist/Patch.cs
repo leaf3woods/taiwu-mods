@@ -66,12 +66,12 @@ namespace straight_A_protagonist
                 AdaptableLog.Info($"get all({_config.AllAvailableFeatures.Count()})-custom({customFeatPool.Count()}) feats succeed");
                 if (!_config.IsOriginPoolGen)
                 {
-                    _config.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures, "available_features.json");
+                    PatchConfig.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures, "available_features.json");
                     //一个组必定都是基础属性
-                    _config.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures
+                    PatchConfig.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures
                         .Where(x => featureInstance[x.Id].Basic)
                         , "available_basic_features.json");
-                    _config.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures
+                    PatchConfig.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures
                         .Where(x => featureInstance[x.Id].CandidateGroupId == 0)
                         , "available_basic_positive_features.json");
                     AdaptableLog.Info("generate origin pool succeed");

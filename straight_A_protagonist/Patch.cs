@@ -58,29 +58,49 @@ namespace straight_A_protagonist
                     };
                 });
                 var customFeatPool = _config.AllAvailableFeatures
-                    .Where(x => _config.CustomFeatures.Any(y => x.Id == y.Id && y.IsLocked))
-                    .ToDictionary(x => x.Id, x => x.GroupId)
+                    .Where(x => _config.CustomFeatures.Any(y => x.Id == y.Id))
                     ?? throw new Exception("can't find available feature in custom feature pool!");
+                var lockedFeatDic = customFeatPool
+                    .Where(x => x.IsLocked && !featureGroup2Id.Any(y => y.Key == x.Id))
+                    .ToDictionary(x => x.Id, x => x.GroupId)
+                    .Take(_config.FeaturesCount);
+                featureGroup2Id = featureGroup2Id.Concat(lockedFeatDic).ToDictionary(x => x.Key, x => x.Value);
+                AdaptableLog.Info($"get all({_config.AllAvailableFeatures.Count()})-custom({customFeatPool.Count()}) feats succeed");
+#if DEBUG
+                if (!_config.IsOriginPoolGen)
+                {
+                    _config.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures, "available_features.json");
+                    //一个组必定都是基础属性
+                    _config.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures
+                        .Where(x => featureInstance[x.Id].Basic)
+                        , "available_basic_features.json");
+                    _config.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures
+                        .Where(x => featureInstance[x.Id].CandidateGroupId == 0)
+                        , "available_basic_positive_features.json");
+                    AdaptableLog.Info("generate origin pool succeed");
+                }
+#endif
                 //减去消耗的基础属性数
                 var customFeatureCount = _config.FeaturesCount - featureGroup2Id.Count(x => featureInstance[x.Value].Basic);
-                AdaptableLog.Info($"remain custom features count is {customFeatureCount}");
+                var remainsCustomFeatPool = customFeatPool
+                    .Where(x => !featureGroup2Id.Any(y => y.Key == x.Id))
+                    .ToDictionary(x => x.Id, x => x.GroupId);
+                AdaptableLog.Info($"remain custom features/pool count is {customFeatureCount}/{remainsCustomFeatPool.Count}");
                 while (customFeatureCount > 0)
                 {
-//#warning using custom here!!!
-                    var radomFeature = GetRandomFeatureFromCustomPool(customPool:customFeatPool);
+                    //#warning using custom here!!!
+                    var radomFeature = GetRandomFeatureFromCustomPool(remainsCustomFeatPool);
                     featureGroup2Id.Add(radomFeature.Item1, radomFeature.Item2);
                     customFeatureCount--;
                 }
-                AdaptableLog.Info("feature add Succeed! detail:" + String.Join(",",featureGroup2Id.Values));
-#if DEBUG
+                _config.IsOriginPoolGen = true;
                 _config.SaveConfig();
-                AdaptableLog.Info("SaveConfig Succeed");
-#endif
+                AdaptableLog.Info("feature add Succeed! detail:" + String.Join(",",featureGroup2Id.Values));
                 return false;
             }
             catch(Exception ex)
             {
-                AdaptableLog.Error($"patching feature failed: " + ex.Message);
+                AdaptableLog.Warning($"patching feature failed: " + ex.Message);
                 return true;
             }
         }
@@ -88,7 +108,9 @@ namespace straight_A_protagonist
         private static (short,short) GetRandomFeatureFromCustomPool(Dictionary<short,short> customPool)
         {
             var groupIds = customPool.Select(x => x.Key).ToArray();
-            var groupId = groupIds[new Random().Next(0, groupIds.Count() - 1)];
+            var randomIndex = new Random().Next(0, groupIds.Count() - 1);
+            var groupId = groupIds[randomIndex];
+            AdaptableLog.Info($"random index is {randomIndex}, result is ({groupId}, {customPool[groupId]})");
             return (groupId, customPool[groupId]);
         }
     }

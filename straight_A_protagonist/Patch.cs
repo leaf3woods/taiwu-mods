@@ -62,17 +62,6 @@ namespace straight_A_protagonist
                         Name = x.Name,
                     };
                 });
-                var customFeatPool = _config.CustomFeatures
-                    .Where(x => _config.AllAvailableFeatures.Any(y => x.Id == y.Id))
-                    ?? throw new Exception("can't find available feature in custom feature pool!");
-                var lockedFeatDic = customFeatPool
-                    .Where(x => x.IsLocked && !featureGroup2Id.Any(y => y.Value == x.Id))
-                    .ToDictionary(x => x.GroupId, x => x.Id)
-                    .Take(_config.FeaturesCount);
-                var tempFeatureGroup2Id = featureGroup2Id.Concat(lockedFeatDic).ToDictionary(x => x.Key, x => x.Value);
-                featureGroup2Id.Clear();
-                foreach (var feature in tempFeatureGroup2Id) featureGroup2Id.TryAdd(feature.Key,feature.Value);
-                AdaptableLog.Info($"get all({_config.AllAvailableFeatures.Count()})-custom({customFeatPool.Count()})-locked({lockedFeatDic.Count()}) feats succeed");
                 if (!_config.IsOriginPoolGen)
                 {
                     PatchConfig.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures, "available_features.json");
@@ -84,20 +73,37 @@ namespace straight_A_protagonist
                         .Where(x => featureInstance[x.Id].CandidateGroupId == 0)
                         , "available_basic_positive_features.json");
                     AdaptableLog.Info("generate origin pool succeed");
+                    _config.IsOriginPoolGen = true;
+                    _config.SaveConfig();
+                    AdaptableLog.Info("generate config file pool succeed");
                 }
+                var customFeatPool = _config.CustomFeatures
+                    .Where(x => _config.AllAvailableFeatures.Any(y => x.Id == y.Id));
+                if(customFeatPool.Count() == 0) throw new Exception("can't find available feature in custom feature pool!");
+                var lockedFeatDic = customFeatPool
+                    .Where(x => x.IsLocked && !featureGroup2Id.Any(y => y.Value == x.Id))
+                    .ToDictionary(x => x.Id, x => x.GroupId)
+                    .Take(_config.FeaturesCount);
+                var tempFeatureGroup2Id = featureGroup2Id.Concat(lockedFeatDic).ToDictionary(x => x.Key, x => x.Value);
+                featureGroup2Id.Clear();
+                foreach (var feature in tempFeatureGroup2Id)
+                {
+                    if (featureGroup2Id.ContainsValue(feature.Value) && !_config.IfUnlockSameGroup) continue;
+                    featureGroup2Id.TryAdd(feature.Key, _config.IfUnlockSameGroup ? feature.Key : feature.Value);
+                }
+                AdaptableLog.Info($"get all({_config.AllAvailableFeatures.Count()})-custom({customFeatPool.Count()})"
+                    + $"-locked({lockedFeatDic.Join(x => x.Key.ToString(), ",")}) feats succeed");
                 //减去消耗的基础属性数
                 var customFeatureCount = _config.FeaturesCount - featureGroup2Id.Count(x => featureInstance[x.Value].Basic);
                 var remainsCustomFeatPool = customFeatPool
                     .Where(x => !featureGroup2Id.Any(y => y.Value == x.Id))
-                    .ToDictionary(x => x.GroupId, x => x.Id);
+                    .ToDictionary(x => x.Id, x => x.GroupId);
                 AdaptableLog.Info($"remain custom features/pool count is {customFeatureCount}/{remainsCustomFeatPool.Count}");
                 while (customFeatureCount-- > 0)
                 {
                     var radomFeature = GetRandomFeatureFromCustomPool(featureGroup2Id, remainsCustomFeatPool);
                     featureGroup2Id.TryAdd(radomFeature.Item1, radomFeature.Item2);
                 }
-                _config.IsOriginPoolGen = true;
-                _config.SaveConfig();
                 AdaptableLog.Info("feature add Succeed! detail:" + string.Join(",", featureGroup2Id.Values));
                 return false;
             }
@@ -110,7 +116,7 @@ namespace straight_A_protagonist
 
         private static (short,short) GetRandomFeatureFromCustomPool(Dictionary<short,short> currentPool, Dictionary<short,short> customPool)
         {
-            var featIds = customPool.Select(x => x.Key).ToArray();
+            var featIds = customPool.Keys.ToArray();
             int randomIndex = 0;
             short featId = 0;
             int tryTimesMax = 100;
@@ -119,7 +125,7 @@ namespace straight_A_protagonist
                 randomIndex = new Random().Next(0, customPool.Count - 1);
                 featId = featIds[randomIndex];
                 //groupid 用于锁定同组元素
-                if (currentPool.ContainsValue(_config.IfUnlockSameGroup ? featId : customPool[featId])) continue;
+                if (currentPool.ContainsValue(customPool[featId])) continue;
                 else break;
             }
 #if DEBUG

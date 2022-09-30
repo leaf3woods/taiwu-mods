@@ -16,8 +16,8 @@ namespace TaiWuSavEditor
                 "2",
                 "3",
             };
-            Clear(test);
-            Console.WriteLine(test);
+            //Clear(test);
+            Console.WriteLine(string.Join(",",test.Take(6)));
 
             //Console.WriteLine($"{dc}");
             Console.WriteLine($"run main loop");

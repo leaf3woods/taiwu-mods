@@ -62,17 +62,17 @@ namespace straight_A_protagonist
                         Name = x.Name,
                     };
                 });
-                var customFeatPool = _config.AllAvailableFeatures
-                    .Where(x => _config.CustomFeatures.Any(y => x.Id == y.Id))
+                var customFeatPool = _config.CustomFeatures
+                    .Where(x => _config.AllAvailableFeatures.Any(y => x.Id == y.Id))
                     ?? throw new Exception("can't find available feature in custom feature pool!");
                 var lockedFeatDic = customFeatPool
-                    .Where(x => x.IsLocked && !featureGroup2Id.Any(y => y.Key == x.Id))
-                    .ToDictionary(x => x.Id, x => x.GroupId)
+                    .Where(x => x.IsLocked && !featureGroup2Id.Any(y => y.Value == x.Id))
+                    .ToDictionary(x => x.GroupId, x => x.Id)
                     .Take(_config.FeaturesCount);
                 var tempFeatureGroup2Id = featureGroup2Id.Concat(lockedFeatDic).ToDictionary(x => x.Key, x => x.Value);
                 featureGroup2Id.Clear();
                 foreach (var feature in tempFeatureGroup2Id) featureGroup2Id.TryAdd(feature.Key,feature.Value);
-                AdaptableLog.Info($"get all({_config.AllAvailableFeatures.Count()})-custom({customFeatPool.Count()}) feats succeed");
+                AdaptableLog.Info($"get all({_config.AllAvailableFeatures.Count()})-custom({customFeatPool.Count()})-locked({lockedFeatDic.Count()}) feats succeed");
                 if (!_config.IsOriginPoolGen)
                 {
                     PatchConfig.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures, "available_features.json");
@@ -88,8 +88,8 @@ namespace straight_A_protagonist
                 //减去消耗的基础属性数
                 var customFeatureCount = _config.FeaturesCount - featureGroup2Id.Count(x => featureInstance[x.Value].Basic);
                 var remainsCustomFeatPool = customFeatPool
-                    .Where(x => !featureGroup2Id.Any(y => y.Key == x.Id))
-                    .ToDictionary(x => x.Id, x => x.GroupId);
+                    .Where(x => !featureGroup2Id.Any(y => y.Value == x.Id))
+                    .ToDictionary(x => x.GroupId, x => x.Id);
                 AdaptableLog.Info($"remain custom features/pool count is {customFeatureCount}/{remainsCustomFeatPool.Count}");
                 while (customFeatureCount-- > 0)
                 {

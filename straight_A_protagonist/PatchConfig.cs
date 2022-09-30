@@ -46,7 +46,7 @@ namespace straight_A_protagonist
             }
             catch(Exception ex)
             {
-                AdaptableLog.Warning($"load config file failed: " + ex.Message);
+                AdaptableLog.Warning(Patch.MessageWrapper($"load config file failed: " + ex.Message));
                 var @default = new PatchConfig
                 {
                     FeaturesCount = 7,

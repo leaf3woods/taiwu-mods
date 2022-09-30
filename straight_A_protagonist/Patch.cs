@@ -23,20 +23,20 @@ namespace straight_A_protagonist
             {
                 _config.SaveConfig();
                 _harmony?.UnpatchAll();
-                AdaptableLog.Info("harmony patch disposed!");
+                AdaptableLog.Info(MessageWrapper("harmony patch disposed!"));
             }
             catch(Exception ex)
             {
-                AdaptableLog.Info("harmony patch dispose failed: " + ex.Message);
+                AdaptableLog.Info(MessageWrapper("harmony patch dispose failed: " + ex.Message));
             }
         }
 
         public override void Initialize()
         {
             _harmony = Harmony.CreateAndPatchAll(typeof(Patch));
-            AdaptableLog.Info("straight_A_protagonist injection succeed!");
+            AdaptableLog.Info(MessageWrapper("straight_A_protagonist injection succeed!"));
             _config = PatchConfig.LoadConfigFile();
-            AdaptableLog.Info("settings load succeed!" + PatchConfig.PathBase);
+            AdaptableLog.Info(MessageWrapper("settings load succeed!" + PatchConfig.PathBase));
         }
         /// <summary>
         /// ref List<short> ____featureIds, 引用私有属性
@@ -51,7 +51,7 @@ namespace straight_A_protagonist
             if (!isProtagonist) return true;
             try
             {
-                AdaptableLog.Info($"current features's featId are {string.Join(",", featureGroup2Id.Values)}");
+                AdaptableLog.Info(MessageWrapper($"current features's featId are {string.Join(",", featureGroup2Id.Values)}"));
                 var featureInstance = CharacterFeature.Instance;
                 _config.AllAvailableFeatures = featureInstance.Select<CharacterFeatureItem, Feature>(x =>
                 {
@@ -72,10 +72,10 @@ namespace straight_A_protagonist
                     PatchConfig.SaveAsJson<IEnumerable<Feature>>(_config.AllAvailableFeatures
                         .Where(x => featureInstance[x.Id].CandidateGroupId == 0)
                         , "available_basic_positive_features.json");
-                    AdaptableLog.Info("generate origin pool succeed");
+                    AdaptableLog.Info(MessageWrapper("generate origin pool succeed"));
                     _config.IsOriginPoolGen = true;
                     _config.SaveConfig();
-                    AdaptableLog.Info("generate config file pool succeed");
+                    AdaptableLog.Info(MessageWrapper("generate config file pool succeed"));
                 }
                 var customFeatPool = _config.CustomFeatures
                     .Where(x => _config.AllAvailableFeatures.Any(y => x.Id == y.Id));
@@ -91,25 +91,25 @@ namespace straight_A_protagonist
                     if (featureGroup2Id.ContainsValue(feature.Value) && !_config.IfUnlockSameGroup) continue;
                     featureGroup2Id.TryAdd(feature.Key, _config.IfUnlockSameGroup ? feature.Key : feature.Value);
                 }
-                AdaptableLog.Info($"get all({_config.AllAvailableFeatures.Count()})-custom({customFeatPool.Count()})"
-                    + $"-locked({lockedFeatDic.Join(x => x.Key.ToString(), ",")}) feats succeed");
+                AdaptableLog.Info(MessageWrapper($"get all({_config.AllAvailableFeatures.Count()})-custom({customFeatPool.Count()})"
+                    + $"-locked({lockedFeatDic.Join(x => x.Key.ToString(), ",")}) feats succeed"));
                 //减去消耗的基础属性数
                 var customFeatureCount = _config.FeaturesCount - featureGroup2Id.Count(x => featureInstance[x.Value].Basic);
                 var remainsCustomFeatPool = customFeatPool
                     .Where(x => !featureGroup2Id.Any(y => y.Value == x.Id))
                     .ToDictionary(x => x.Id, x => x.GroupId);
-                AdaptableLog.Info($"remain custom features/pool count is {customFeatureCount}/{remainsCustomFeatPool.Count}");
+                AdaptableLog.Info(MessageWrapper($"remain custom features/pool count is {customFeatureCount}/{remainsCustomFeatPool.Count}"));
                 while (customFeatureCount-- > 0)
                 {
                     var radomFeature = GetRandomFeatureFromCustomPool(featureGroup2Id, remainsCustomFeatPool);
                     featureGroup2Id.TryAdd(radomFeature.Item1, radomFeature.Item2);
                 }
-                AdaptableLog.Info("feature add Succeed! detail:" + string.Join(",", featureGroup2Id.Values));
+                AdaptableLog.Info(MessageWrapper("feature add Succeed! detail:" + string.Join(",", featureGroup2Id.Values)));
                 return false;
             }
             catch(Exception ex)
             {
-                AdaptableLog.Warning($"patching feature failed: " + ex.Message);
+                AdaptableLog.Warning(MessageWrapper($"patching feature failed: " + ex.Message));
                 return true;
             }
         }
@@ -129,10 +129,12 @@ namespace straight_A_protagonist
                 else break;
             }
 #if DEBUG
-            AdaptableLog.Info($"random index is {randomIndex}, result is ({featId}, {customPool[featId]})");
+            AdaptableLog.Info(MessageWrapper($"random index is {randomIndex}, result is ({featId}, {customPool[featId]})"));
 #endif
             return (featId, customPool[featId]);
         }
+
+        public static string MessageWrapper(string message) => $"[mod patching]:" + message;
     }
 
     public class Feature

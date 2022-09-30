@@ -48,3 +48,524 @@
 > **其他**
 
 * 日志通过后台程序输出，在logs文件夹下
+
+> **例子**
+
+* 以下这个例子选取了所有优点特质作为自定义特质池
+* 同时解锁了同组特质只出现一次
+
+```json
+{
+    "FeaturesCount": 7,
+    "IfUseCustomFeaturePool": true,
+    "IsOriginPoolGen": true,
+    "IfUnlockSameGroup": true,
+    "CustomFeatures": [
+        {
+            "Id": 0,
+            "Name": "孔武有力",
+            "GroupId": 0,
+            "IsLocked": false
+        },
+        {
+            "Id": 1,
+            "Name": "牛虎怪力",
+            "GroupId": 0,
+            "IsLocked": false
+        },
+        {
+            "Id": 2,
+            "Name": "拔山扛鼎",
+            "GroupId": 0,
+            "IsLocked": false
+        },
+        {
+            "Id": 6,
+            "Name": "身强体健",
+            "GroupId": 6,
+            "IsLocked": false
+        },
+        {
+            "Id": 7,
+            "Name": "龙神马壮",
+            "GroupId": 6,
+            "IsLocked": false
+        },
+        {
+            "Id": 8,
+            "Name": "天人骨血",
+            "GroupId": 6,
+            "IsLocked": false
+        },
+        {
+            "Id": 12,
+            "Name": "耳聪目明",
+            "GroupId": 12,
+            "IsLocked": false
+        },
+        {
+            "Id": 13,
+            "Name": "剖决如流",
+            "GroupId": 12,
+            "IsLocked": false
+        },
+        {
+            "Id": 14,
+            "Name": "诡变无踪",
+            "GroupId": 12,
+            "IsLocked": false
+        },
+        {
+            "Id": 18,
+            "Name": "骨骼清奇",
+            "GroupId": 18,
+            "IsLocked": false
+        },
+        {
+            "Id": 19,
+            "Name": "形正神明",
+            "GroupId": 18,
+            "IsLocked": false
+        },
+        {
+            "Id": 20,
+            "Name": "仙胎仙骨",
+            "GroupId": 18,
+            "IsLocked": false
+        },
+        {
+            "Id": 24,
+            "Name": "才思敏捷",
+            "GroupId": 24,
+            "IsLocked": false
+        },
+        {
+            "Id": 25,
+            "Name": "灵心慧性",
+            "GroupId": 24,
+            "IsLocked": false
+        },
+        {
+            "Id": 26,
+            "Name": "智绝无双",
+            "GroupId": 24,
+            "IsLocked": false
+        },
+        {
+            "Id": 30,
+            "Name": "刚毅隐忍",
+            "GroupId": 30,
+            "IsLocked": false
+        },
+        {
+            "Id": 31,
+            "Name": "心清意明",
+            "GroupId": 30,
+            "IsLocked": false
+        },
+        {
+            "Id": 32,
+            "Name": "琨玉秋霜",
+            "GroupId": 30,
+            "IsLocked": false
+        },
+        {
+            "Id": 36,
+            "Name": "良才美玉",
+            "GroupId": 36,
+            "IsLocked": true
+        },
+        {
+            "Id": 37,
+            "Name": "不世奇才",
+            "GroupId": 36,
+            "IsLocked": true
+        },
+        {
+            "Id": 38,
+            "Name": "天元一气",
+            "GroupId": 36,
+            "IsLocked": true
+        },
+        {
+            "Id": 42,
+            "Name": "善解人意",
+            "GroupId": 42,
+            "IsLocked": false
+        },
+        {
+            "Id": 43,
+            "Name": "八面玲珑",
+            "GroupId": 42,
+            "IsLocked": false
+        },
+        {
+            "Id": 44,
+            "Name": "超凡脱俗",
+            "GroupId": 42,
+            "IsLocked": false
+        },
+        {
+            "Id": 48,
+            "Name": "福星高照",
+            "GroupId": 48,
+            "IsLocked": false
+        },
+        {
+            "Id": 49,
+            "Name": "禄马同乡",
+            "GroupId": 48,
+            "IsLocked": false
+        },
+        {
+            "Id": 50,
+            "Name": "如天至福",
+            "GroupId": 48,
+            "IsLocked": false
+        },
+        {
+            "Id": 54,
+            "Name": "皮坚骨硬",
+            "GroupId": 54,
+            "IsLocked": false
+        },
+        {
+            "Id": 55,
+            "Name": "钢筋铁骨",
+            "GroupId": 54,
+            "IsLocked": false
+        },
+        {
+            "Id": 56,
+            "Name": "金刚不坏",
+            "GroupId": 54,
+            "IsLocked": false
+        },
+        {
+            "Id": 60,
+            "Name": "六脉调和",
+            "GroupId": 60,
+            "IsLocked": false
+        },
+        {
+            "Id": 61,
+            "Name": "周天不息",
+            "GroupId": 60,
+            "IsLocked": false
+        },
+        {
+            "Id": 62,
+            "Name": "天人合一",
+            "GroupId": 60,
+            "IsLocked": false
+        },
+        {
+            "Id": 66,
+            "Name": "容光焕发",
+            "GroupId": 66,
+            "IsLocked": false
+        },
+        {
+            "Id": 67,
+            "Name": "生龙活虎",
+            "GroupId": 66,
+            "IsLocked": false
+        },
+        {
+            "Id": 68,
+            "Name": "百病不侵",
+            "GroupId": 66,
+            "IsLocked": false
+        },
+        {
+            "Id": 72,
+            "Name": "克己慎行",
+            "GroupId": 72,
+            "IsLocked": false
+        },
+        {
+            "Id": 73,
+            "Name": "沉稳果决",
+            "GroupId": 72,
+            "IsLocked": false
+        },
+        {
+            "Id": 74,
+            "Name": "稳如磐石",
+            "GroupId": 72,
+            "IsLocked": false
+        },
+        {
+            "Id": 78,
+            "Name": "三元汇聚",
+            "GroupId": 78,
+            "IsLocked": false
+        },
+        {
+            "Id": 79,
+            "Name": "先天气体",
+            "GroupId": 78,
+            "IsLocked": false
+        },
+        {
+            "Id": 80,
+            "Name": "身披华光",
+            "GroupId": 78,
+            "IsLocked": false
+        },
+        {
+            "Id": 84,
+            "Name": "意定神闲",
+            "GroupId": 84,
+            "IsLocked": false
+        },
+        {
+            "Id": 85,
+            "Name": "神融气泰",
+            "GroupId": 84,
+            "IsLocked": false
+        },
+        {
+            "Id": 86,
+            "Name": "八脉天通",
+            "GroupId": 84,
+            "IsLocked": false
+        },
+        {
+            "Id": 90,
+            "Name": "沉静寡言",
+            "GroupId": 90,
+            "IsLocked": false
+        },
+        {
+            "Id": 91,
+            "Name": "处变不惊",
+            "GroupId": 90,
+            "IsLocked": false
+        },
+        {
+            "Id": 92,
+            "Name": "优游自若",
+            "GroupId": 90,
+            "IsLocked": false
+        },
+        {
+            "Id": 96,
+            "Name": "思虑入微",
+            "GroupId": 96,
+            "IsLocked": false
+        },
+        {
+            "Id": 97,
+            "Name": "洞若观火",
+            "GroupId": 96,
+            "IsLocked": false
+        },
+        {
+            "Id": 98,
+            "Name": "火眼金睛",
+            "GroupId": 96,
+            "IsLocked": false
+        },
+        {
+            "Id": 102,
+            "Name": "眼疾手快",
+            "GroupId": 102,
+            "IsLocked": false
+        },
+        {
+            "Id": 103,
+            "Name": "听风辨位",
+            "GroupId": 102,
+            "IsLocked": false
+        },
+        {
+            "Id": 104,
+            "Name": "蹑影藏形",
+            "GroupId": 102,
+            "IsLocked": false
+        },
+        {
+            "Id": 108,
+            "Name": "胆大于身",
+            "GroupId": 108,
+            "IsLocked": false
+        },
+        {
+            "Id": 109,
+            "Name": "无所畏惧",
+            "GroupId": 108,
+            "IsLocked": false
+        },
+        {
+            "Id": 110,
+            "Name": "舍生忘死",
+            "GroupId": 108,
+            "IsLocked": false
+        },
+        {
+            "Id": 114,
+            "Name": "临机应变",
+            "GroupId": 114,
+            "IsLocked": false
+        },
+        {
+            "Id": 115,
+            "Name": "沉机观变",
+            "GroupId": 114,
+            "IsLocked": false
+        },
+        {
+            "Id": 116,
+            "Name": "穷极要妙",
+            "GroupId": 114,
+            "IsLocked": false
+        },
+        {
+            "Id": 120,
+            "Name": "动如脱兔",
+            "GroupId": 120,
+            "IsLocked": false
+        },
+        {
+            "Id": 121,
+            "Name": "电光石火",
+            "GroupId": 120,
+            "IsLocked": false
+        },
+        {
+            "Id": 122,
+            "Name": "奔逸绝尘",
+            "GroupId": 120,
+            "IsLocked": false
+        },
+        {
+            "Id": 126,
+            "Name": "杀气腾腾",
+            "GroupId": 126,
+            "IsLocked": false
+        },
+        {
+            "Id": 127,
+            "Name": "心无恻隐",
+            "GroupId": 126,
+            "IsLocked": false
+        },
+        {
+            "Id": 128,
+            "Name": "恶鬼罗刹",
+            "GroupId": 126,
+            "IsLocked": false
+        },
+        {
+            "Id": 132,
+            "Name": "脉象殷实",
+            "GroupId": 132,
+            "IsLocked": false
+        },
+        {
+            "Id": 133,
+            "Name": "气海充盈",
+            "GroupId": 132,
+            "IsLocked": false
+        },
+        {
+            "Id": 134,
+            "Name": "真气精纯",
+            "GroupId": 132,
+            "IsLocked": false
+        },
+        {
+            "Id": 138,
+            "Name": "五行俱全",
+            "GroupId": 138,
+            "IsLocked": false
+        },
+        {
+            "Id": 139,
+            "Name": "太和灵气",
+            "GroupId": 138,
+            "IsLocked": false
+        },
+        {
+            "Id": 140,
+            "Name": "混元奇窍",
+            "GroupId": 138,
+            "IsLocked": false
+        },
+        {
+            "Id": 144,
+            "Name": "健步如飞",
+            "GroupId": 144,
+            "IsLocked": false
+        },
+        {
+            "Id": 145,
+            "Name": "高视阔步",
+            "GroupId": 144,
+            "IsLocked": false
+        },
+        {
+            "Id": 146,
+            "Name": "夭矫如龙",
+            "GroupId": 144,
+            "IsLocked": false
+        },
+        {
+            "Id": 150,
+            "Name": "体质特异",
+            "GroupId": 150,
+            "IsLocked": false
+        },
+        {
+            "Id": 151,
+            "Name": "冰心玉骨",
+            "GroupId": 150,
+            "IsLocked": false
+        },
+        {
+            "Id": 152,
+            "Name": "百毒不侵",
+            "GroupId": 150,
+            "IsLocked": false
+        },
+        {
+            "Id": 156,
+            "Name": "手长脚长",
+            "GroupId": 156,
+            "IsLocked": true
+        },
+        {
+            "Id": 157,
+            "Name": "亭亭鹤立",
+            "GroupId": 156,
+            "IsLocked": true
+        },
+        {
+            "Id": 158,
+            "Name": "蜂腰猿背",
+            "GroupId": 156,
+            "IsLocked": false
+        },
+        {
+            "Id": 162,
+            "Name": "情有独钟",
+            "GroupId": 162,
+            "IsLocked": false
+        },
+        {
+            "Id": 163,
+            "Name": "从一而终",
+            "GroupId": 162,
+            "IsLocked": false
+        },
+        {
+            "Id": 164,
+            "Name": "忠贞不渝",
+            "GroupId": 162,
+            "IsLocked": false
+        }
+    ]
+}
+```
+

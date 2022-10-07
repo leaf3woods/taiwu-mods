@@ -1,19 +1,38 @@
 # 太吾绘卷Mods
 ###### mods of the scroll of tai wu
 
-
+> GitHub开源： https://github.com/leaf3woods/tai_wu_mods
 
 ##### 1.全优主角 / *straight_A_protagonist*
 
-> Mod目录结构
+> Mod目录结构（游戏所在目录）
 
-* 游戏所在目录的Mod文件夹下：
+* 初始：
 
-```
+```shell
 └─straight_A_protagonist
     │  Config.lua
-    │  girl.jpg
+    │  local.jpg
+    │  workshop.jpg
+    │  README.md
     │  Settings.Lua
+    │  setting_example.json
+    │
+    └─Plugins
+            straight_A_protagonist.dll
+            straight_A_protagonist.pdb
+```
+
+* 初次运行后
+
+```shell
+└─straight_A_protagonist
+    │  Config.lua
+    │  local.jpg
+    │  workshop.jpg
+    │  README.md
+    │  Settings.Lua
+    │  setting_example.json
     │
     └─Plugins
         │  straight_A_protagonist.dll
@@ -30,6 +49,7 @@
 
 > ###### 说明
 
+* **setting_example.json 提供了配置文件的参考模板，使用优点特质池，特质数量7**
 * 第一次成功加载此Mod后，将在dll 所在 Config/目录下，以json格式生成配置文件（patch_settings.json）以及当前游戏所支持的全特质池（available_features.json）、全基础特质池（"available_basic_features.json"）、全优点特质池（"available_basic_positive_features.json"）
 * 第一次使用时，请前往所需的特质池中选择并拷贝你需要的特质至patch_settings.json 的CustomFeatures字段处，若未定义则使用默认池子
 * 每个特质包含一个"IsLocked" 字段，如果你希望锁定某个特质，请在CustomFeatures中找到对应特质并将"IsLocked"字段设置为true

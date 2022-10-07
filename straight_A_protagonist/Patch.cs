@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using Config;
 using System;
+using GameData.Domains;
 
 namespace straight_A_protagonist
 {
@@ -17,6 +18,23 @@ namespace straight_A_protagonist
         private Harmony _harmony;
         private static PatchConfig _config;
 
+        public override void OnModSettingUpdate()
+        {
+            bool useJsonSettings = true;
+            DomainManager.Mod.GetSetting(base.ModIdStr, "IfUseJsonSettings", ref useJsonSettings);
+            bool unlockSameGroup = true;
+            DomainManager.Mod.GetSetting(base.ModIdStr, "IfUnlockSameGroup", ref unlockSameGroup);
+            int featuresCount = 7;
+            DomainManager.Mod.GetSetting(base.ModIdStr, "FeaturesCount", ref featuresCount);
+            if (_config != null && !useJsonSettings)
+            {
+                _config.FeaturesCount = featuresCount;
+                _config.IfUnlockSameGroup = unlockSameGroup;
+                AdaptableLog.Info(MessageWrapper($"正在使用前台配置! 特质数:{featuresCount}, 锁定同组:{!unlockSameGroup} "));
+                _config.SaveSettings();
+            }
+
+        }
         public override void Dispose()
         {
             try

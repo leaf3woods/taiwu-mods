@@ -21,7 +21,7 @@ namespace straight_A_protagonist
         {
             try
             {
-                _config.SaveConfig();
+                _config.SaveSettings();
                 _harmony?.UnpatchAll();
                 AdaptableLog.Info(MessageWrapper("harmony patch disposed!"));
             }
@@ -74,7 +74,7 @@ namespace straight_A_protagonist
                         , "available_basic_positive_features.json");
                     AdaptableLog.Info(MessageWrapper("generate origin pool succeed"));
                     _config.IsOriginPoolGen = true;
-                    _config.SaveConfig();
+                    _config.SaveSettings();
                     AdaptableLog.Info(MessageWrapper("generate config file pool succeed"));
                 }
                 var customFeatPool = _config.CustomFeatures

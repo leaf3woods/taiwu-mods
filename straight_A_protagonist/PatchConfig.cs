@@ -60,7 +60,10 @@ namespace straight_A_protagonist
             }
         }
 
-        public void SaveConfig(string filename = null) => SaveAsJson<PatchConfig>(this, filename ?? _filename);
+        public void SaveSettings(string filename = null)
+        { 
+            if (!File.Exists(filename ?? _filename)) SaveAsJson<PatchConfig>(this, filename ?? _filename);
+        }
 
         private static void SaveConfig(PatchConfig config, string filename = null) => SaveAsJson<PatchConfig>(config, filename ?? _filename);
 
